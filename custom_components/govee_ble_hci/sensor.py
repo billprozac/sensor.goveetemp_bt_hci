@@ -86,7 +86,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None) -> None:
 
     govee_devices: List[BLE_HT_data] = []  # Data objects of configured devices
     sensors_by_mac = {}  # HomeAssistant sensors by MAC address
-
+    adapter = None
+    
     def handle_meta_event(hci_packet) -> None:
         """Handle recieved BLE data."""
         # If recieved BLE packet is of type ADVERTISING_REPORT
@@ -182,7 +183,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None) -> None:
     def update_ble_loop(now) -> None:
         """Lookup Bluetooth LE devices and update status."""
         _LOGGER.debug("update_ble_loop called")
-
+        adapter.start_scanning()
+        
         try:
             # Time to make the dounuts
             update_ble_devices(config)
